@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\StoreRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -27,10 +28,8 @@ class PostController extends Controller
     {
         $post = new Post();
 
-        dd(Category::get());
-
         $categories = Category::pluck('id', 'title');
-        return view('dashboard/post/create', compact('post'));
+        return view('dashboard/post/create', compact('post', 'categories'));
     }
 
     /**
@@ -39,7 +38,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
 
         //$requestData['url_clean'] = $urlClean;
@@ -47,11 +46,11 @@ class PostController extends Controller
         //$validator = Validator::make($requestData, StorePostPost::myRules());
 
         $validated = $request->validate([
-           // 'slug' => 'max:500|unique:posts',
+            // 'slug' => 'max:500|unique:posts',
             'content' => 'required|min:5',
             'description' => 'required|min:5|max:500',
             //'category_id' => 'required',
-           // 'posted' => 'required',
+            // 'posted' => 'required',
             'title' => [
                 'required',
                 'min:5',
