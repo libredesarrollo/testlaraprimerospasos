@@ -16,7 +16,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::with('category')
+            ->orderBy('created_at', request('created_at', 'DESC'));
+
+        $posts = $posts->get(); //->paginate(10);
+
+        return view('dashboard.post.index', ['posts' => $posts]);
     }
 
     /**
@@ -45,21 +50,21 @@ class PostController extends Controller
 
         //$validator = Validator::make($requestData, StorePostPost::myRules());
 
-        $validated = $request->validate([
-            // 'slug' => 'max:500|unique:posts',
-            'content' => 'required|min:5',
-            'description' => 'required|min:5|max:500',
-            //'category_id' => 'required',
-            // 'posted' => 'required',
-            'title' => [
-                'required',
-                'min:5',
-                'max:500',
-                //new Uppercase()
-            ]
-        ]);
+        // $validated = $request->validate([
+        //     // 'slug' => 'max:500|unique:posts',
+        //     'content' => 'required|min:5',
+        //     'description' => 'required|min:5|max:500',
+        //     //'category_id' => 'required',
+        //     // 'posted' => 'required',
+        //     'title' => [
+        //         'required',
+        //         'min:5',
+        //         'max:500',
+        //         //new Uppercase()
+        //     ]
+        // ]);
 
-        dd($validated);
+        // dd($validated);
 
         // if ($validated->fails()) {
         //     return "Error";
@@ -72,11 +77,13 @@ class PostController extends Controller
         //         ->withInput();
         // }
 
-        $requestData = $request->validated();
+        // $requestData = $request->validated();
 
-        $post = Post::create($requestData);
+        $post = Post::create($request->validated());
 
-        $post->tags()->sync($request->tags_id);
+        dd($post);
+
+        //$post->tags()->sync($request->tags_id);
 
         return back()->with('status', 'Post creado con exito');
         echo request("title");
