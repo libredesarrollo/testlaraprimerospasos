@@ -1,23 +1,19 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard</title>
+    <title>Document</title>
 </head>
 
 <body>
+    <h1>Contacto</h1>
 
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
+    <p>Tu formulario y demás</p>
 
-    @yield('content')
-
+    <p>Mi nombre es <b><?= $nombre ?></b></p>
 </body>
 
 </html>

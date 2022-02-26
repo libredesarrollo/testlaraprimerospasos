@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Dashboard\PostController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
@@ -19,6 +19,12 @@ use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 Route::get('/', function () {
     return "Hola";
 });
+
+Route::get('/escribeme', function () {
+    $nombre = "Andrés Cruz";
+    return view("web/contacto", ["nombre" => $nombre]);
+});
+
 
 
 Route::resource('post', PostController::class);

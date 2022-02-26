@@ -1,9 +1,9 @@
 @extends('dashboard.layout')
 
 @section('content')
-    @include('dashboard.fragment._errors-form')
-
     <h1>Crear Post</h1>
+
+    @include('dashboard.fragment._errors-form')
 
     <form action="{{ route('post.store') }}" method="post">
 
