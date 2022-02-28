@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Post;
+namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequesst extends FormRequest
+
+
+class PutRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,7 @@ class StoreRequesst extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,8 @@ class StoreRequesst extends FormRequest
     public function rules()
     {
         return [
-            //
-        ];
+            "title" => "required|min:5|max:500",
+            "slug" => "required|min:5|max:500|unique:categories,slug,".$this->route("category")->id,
+        ]; 
     }
 }
