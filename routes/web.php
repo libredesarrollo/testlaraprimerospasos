@@ -2,9 +2,8 @@
 
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\PostController;
-use Illuminate\Routing\Route as RoutingRoute;
+use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,25 +15,21 @@ use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 | contains the "web" middleware group. Now create something great!
 |
 */
+require __DIR__.'/auth.php';
 
 Route::get('/', function () {
-    return "Hola";
+    return view('welcome');
 });
 
-Route::get('/escribeme', function () {
-    $nombre = "Andrés Cruz";
-    return view("web/contacto", ["nombre" => $nombre]);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+
+
+Route::group(['prefix' => 'dashboard'], function () {
+    Route::resources([
+        'post' => PostController::class,
+        'category' => CategoryController::class,
+    ]);
 });
-
-
-
-Route::resource('post', PostController::class);
-Route::resource('category', CategoryController::class);
-
-// Route::get("posts", [PostController::class, 'index']);
-// Route::get("posts/create", [PostController::class, 'create']);
-// Route::get("posts/{post}/edit", [PostController::class, 'edit']);
-
-// Route::post("posts", [PostController::class, 'store']);
-// Route::put("posts/{post}", [PostController::class, 'update']);
-// Route::delete("posts/{post}", [PostController::class, 'delete']);
