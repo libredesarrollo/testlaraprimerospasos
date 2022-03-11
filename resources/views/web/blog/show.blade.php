@@ -1,5 +1,5 @@
 @extends('web.layout')
 
 @section('content')
-    <x-web.blog.post.detail :post="$post"/>
+  <x-web.blog.post.show :post="$post" />
 @endsection

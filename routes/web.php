@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\Dashboard\CategoryController;
-use App\Http\Controllers\Dashboard\PostController;
-use App\Http\Controllers\web\BlogController;
-use App\Http\Middleware\EnsureTokenIsValid;
+use App\Http\Controllers\Web\BlogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,29 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-require __DIR__ . '/auth.php';
-
 Route::get('/', function () {
-    return redirect()->route("web.blog.index");
-    //return view('welcome');
+    return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-
-
-Route::group(['prefix' => 'dashboard'], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth',"admin"]], function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    })->name("dashboard");
     Route::resources([
-        'post' => PostController::class,
-        'category' => CategoryController::class,
+        'post' => App\Http\Controllers\Dashboard\PostController::class,
+        'category' => App\Http\Controllers\Dashboard\CategoryController::class,
     ]);
 });
 
 Route::group(['prefix' => 'blog'], function () {
-    Route::controller(BlogController::class)->group(function () {
-        Route::get('/', "index")->name('web.blog.index');
-        Route::get('/detail/{post}', "show")->name('web.blog.show');
+    Route::controller(BlogController::class)->group(function(){
+        Route::get('/', "index")->name("web.blog.index");
+        Route::get('/{post}', "show")->name("web.blog.show");
     });
 });
+
+require __DIR__ . '/auth.php';

@@ -68,7 +68,7 @@ class PostController extends Controller
         //return route("post.create");
         //return redirect("/post/create");
         //return redirect()->route("post.create");
-        return to_route("post.index")->with('status',"Registro creado.");
+        return to_route("post.index")->with('status',"Registro creado.");;
     }
 
     /**
@@ -107,9 +107,7 @@ class PostController extends Controller
         $data = $request->validated();
         if( isset($data["image"])){
             $data["image"] = $filename = time().".".$data["image"]->extension();
-
             $request->image->move(public_path("image/otro"), $filename);
-            
         }
 
         $post->update($data);

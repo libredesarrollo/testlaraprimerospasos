@@ -1301,10 +1301,6 @@ label {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
-.card-red {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 0 / var(--tw-bg-opacity));
-}
 /* ******************** card */
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
