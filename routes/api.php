@@ -27,9 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('category/{category}/posts', [CategoryController::class, 'posts']);
 });
 
-
-
-
-
 Route::resource('post', PostController::class)->except(["create", "edit"]);
 Route::get('post/slug/{post:slug}', [PostController::class, 'slug']);
+
+Route::post('user/login', [\App\Http\Controllers\Api\UserController::class, 'login']);
