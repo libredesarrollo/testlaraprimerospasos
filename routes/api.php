@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PostController;
+use Illuminate\Routing\RouteGroup;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('category', CategoryController::class)->except(["create", "edit"]);
-Route::get('category/{category}/posts',[CategoryController::class, 'posts']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::resource('category', CategoryController::class)->except(["create", "edit"]);
+    Route::get('category/{category}/posts', [CategoryController::class, 'posts']);
+});
+
+
 
 
 
 Route::resource('post', PostController::class)->except(["create", "edit"]);
-Route::get('post/slug/{post:slug}',[PostController::class, 'slug']);
+Route::get('post/slug/{post:slug}', [PostController::class, 'slug']);
