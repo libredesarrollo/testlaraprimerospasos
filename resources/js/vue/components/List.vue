@@ -1,37 +1,40 @@
 <template>
-    <div>
-             <h1>Primeros pasos2s</h1>
+  <h1>Primeros pasos2s</h1>
 
- <o-field label="Name">
-      <o-input v-model="name"></o-input>
-    </o-field>
-<o-button @click="clickMe">Click Me</o-button>
-
-<o-field label="Username" variant="success" message="This username is available">
-      <o-input value="johnsilver" maxlength="30"></o-input>
-    </o-field>
-
-    <o-field label="Password">
-      <o-input type="password" value="iwantmytreasure" password-reveal> </o-input>
-    </o-field>
-
-    <o-field label="Message">
-      <o-input maxlength="200" type="textarea"></o-input>
-    </o-field>
-
-    <o-field>
-      <o-input placeholder="No label"></o-input>
-    </o-field>
-
-    </div>
+  <o-table :data="posts.length == 0 ? [] : posts">
+    <o-table-column field="id" label="ID" width="40" numeric v-slot="p">
+      {{ p.row.id }}
+    </o-table-column>
+    <o-table-column field="title" label="Título" v-slot="p">
+      {{ p.row.title }}
+    </o-table-column>
+    <o-table-column field="category" label="Categoría" v-slot="p">
+      {{ p.row.category.title }}
+    </o-table-column>
+    <o-table-column field="created_at" label="Fecha" v-slot="p">
+      {{ p.row.created_at }}
+    </o-table-column>
+  </o-table>
 </template>
 
 <script>
 export default {
-       methods: {
-      clickMe() {
-        alert('Clicked!')
-      }
-    }
-}
+  data() {
+    return {
+      loaging: true,
+      posts: [],
+    };
+  },
+  async mounted() {
+    const config = {
+      headers: { Authorization: `Bearer ${this.$root.token}` },
+    };
+
+    this.$axios.get("/api/post", config).then((res) => {
+      this.posts = res.data.data;
+      console.log(this.posts[0]);
+      this.loaging = false;
+    });
+  },
+};
 </script>
