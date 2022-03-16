@@ -1,7 +1,9 @@
 <template>
   <h1>Primeros pasos2s</h1>
 
-  <o-table :data="posts.length == 0 ? [] : posts">
+  <o-table
+    :data="posts.current_page && posts.data.length == 0 ? [] : posts.data"
+  >
     <o-table-column field="id" label="ID" width="40" numeric v-slot="p">
       {{ p.row.id }}
     </o-table-column>
@@ -15,6 +17,25 @@
       {{ p.row.created_at }}
     </o-table-column>
   </o-table>
+
+  <br />
+
+  <o-pagination
+    v-if="posts.current_page && posts.data.length > 0"
+    @change="updatePage"
+    :total="posts.total"
+    v-model:current="currentPage"
+    :range-before="2"
+    :range-after="2"
+    order="centered"
+    size="small"
+    :simple="false"
+    :rounded="true"
+    :per-page="posts.per_page"
+
+
+  >
+  </o-pagination>
 </template>
 
 <script>
@@ -23,18 +44,30 @@ export default {
     return {
       loaging: true,
       posts: [],
+      currentPage: 1,
     };
   },
+  methods: {
+    updatePage() {
+      setTimeout(this.getList, 200);
+    },
+    getList() {
+      console.log("aa" + this.currentPage);
+      const config = {
+        headers: { Authorization: `Bearer ${this.$root.token}` },
+      };
+      this.loaging = true;
+      this.$axios
+        .get("/api/post?page=" + this.currentPage, config)
+        .then((res) => {
+          this.posts = res.data;
+          console.log(this.posts[0]);
+          this.loaging = false;
+        });
+    },
+  },
   async mounted() {
-    const config = {
-      headers: { Authorization: `Bearer ${this.$root.token}` },
-    };
-
-    this.$axios.get("/api/post", config).then((res) => {
-      this.posts = res.data.data;
-      console.log(this.posts[0]);
-      this.loaging = false;
-    });
+    this.getList();
   },
 };
 </script>
