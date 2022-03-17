@@ -1,6 +1,8 @@
 <template>
   <h1>Primeros pasos2s</h1>
 
+  <router-link :to="{ name: 'save' }">Crear</router-link>
+
   <o-table
     :data="posts.current_page && posts.data.length == 0 ? [] : posts.data"
   >
@@ -15,6 +17,11 @@
     </o-table-column>
     <o-table-column field="created_at" label="Fecha" v-slot="p">
       {{ p.row.created_at }}
+    </o-table-column>
+    <o-table-column field="slug" label="Acciones" v-slot="p">
+      <router-link :to="{ name: 'save', params: { slug: p.row.slug } }"
+        >Editar</router-link
+      >
     </o-table-column>
   </o-table>
 
@@ -32,8 +39,6 @@
     :simple="false"
     :rounded="true"
     :per-page="posts.per_page"
-
-
   >
   </o-pagination>
 </template>

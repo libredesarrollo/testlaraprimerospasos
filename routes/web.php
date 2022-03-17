@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/vue', function () {
+Route::get('/vue/{n1?}/{n2?}/{n3?}/{n4?}', function () {
     return view('vue');
 });
 
