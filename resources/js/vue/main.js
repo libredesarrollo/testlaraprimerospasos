@@ -6,6 +6,8 @@ import '@oruga-ui/oruga-next/dist/oruga-full.css'
 
 import '@mdi/font/css/materialdesignicons.css'
 
+//import '../../css/vue.css'
+
 import router from "./router"
 
 import axios from 'axios'

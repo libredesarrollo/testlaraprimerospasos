@@ -1,7 +1,12 @@
 <template>
-  <h1>Primeros pasos2s</h1>
-
+  
   <router-link :to="{ name: 'save' }">Crear</router-link>
+
+  <o-button iconLeft="plus" @click="$router.push({ name: 'save' })">
+    Crear
+  </o-button>
+
+  <br>
 
   <o-table
     :data="posts.current_page && posts.data.length == 0 ? [] : posts.data"
@@ -19,9 +24,10 @@
       {{ p.row.created_at }}
     </o-table-column>
     <o-table-column field="slug" label="Acciones" v-slot="p">
-      <router-link :to="{ name: 'save', params: { slug: p.row.slug } }"
+      <router-link class="m-5"  :to="{ name: 'save', params: { slug: p.row.slug } }"
         >Editar</router-link
       >
+      <o-button class="m-5" iconLeft="delete" size="small" rounded variant="danger" @click="deletePost(p)">Eliminar</o-button>
     </o-table-column>
   </o-table>
 
@@ -69,6 +75,14 @@ export default {
           console.log(this.posts[0]);
           this.loaging = false;
         });
+    },
+    deletePost(row) {
+      console.log(row);
+      console.log(this.posts);
+
+      this.posts.data.splice(row.index,1)
+
+      this.$axios.delete("/api/post/" + row.row.id);
     },
   },
   async mounted() {

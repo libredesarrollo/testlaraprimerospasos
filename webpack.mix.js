@@ -19,4 +19,9 @@ mix
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
+])
+.postCss('resources/css/vue.css', 'public/css', [
+    require('postcss-import'),
+    require('tailwindcss'),
+    require('autoprefixer'),
 ]);

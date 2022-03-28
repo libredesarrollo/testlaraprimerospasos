@@ -7,10 +7,14 @@
     <title>Document</title>
     <script src="{{ asset('js/main.js') }}" defer></script>
 
+    <link rel="stylesheet" href="{{ asset('css/vue.css') }}">
+
 </head>
 <body>
 
-    <div id="app"></div>
+    <div class="container">
+        <div id="app"></div>
+    </div>
     
 </body>
 </html>

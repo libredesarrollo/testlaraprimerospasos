@@ -11,7 +11,7 @@ export const routes = [
     },
     {
         name: 'save',
-        path: '/vue/save',
+        path: '/vue/save/:slug?',
         component: Save
     },
 ];
