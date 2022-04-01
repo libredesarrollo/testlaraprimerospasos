@@ -1,7 +1,6 @@
 <template>
   <form @submit.prevent="submit">
     <div class="grid grid-cols-2 gap-3">
-
       <div class="col-span-2">
         <o-field
           label="title"
@@ -96,6 +95,15 @@ export default {
           .post("/api/post", this.form)
           .then((res) => {
             console.log(res.data);
+
+            this.$oruga.notification.open(
+              /*`Something's not good, also I'm on <b>bottom</b>`,*/ {
+                message: `Cambios registrados con éxito <b>bottom</b>`,
+                position: "bottom-right",
+                duration: 5000,
+                closable: true,
+              }
+            );
           })
           .catch((error) => {
             if (error.response.data.title) {
@@ -105,6 +113,14 @@ export default {
       this.$axios
         .patch("/api/post/" + this.post.id, this.form)
         .then((res) => {
+          this.$oruga.notification.open(
+            /*`Something's not good, also I'm on <b>bottom</b>`,*/ {
+              message: `Cambios registrados con éxito <b>bottom</b>`,
+              position: "bottom-right",
+              duration: 5000,
+              closable: true,
+            }
+          );
           console.log(res.data);
         })
         .catch((error) => {

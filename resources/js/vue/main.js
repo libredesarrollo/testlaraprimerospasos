@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import Oruga from '@oruga-ui/oruga-next'
 import '@oruga-ui/oruga-next/dist/oruga.css'
 import '@oruga-ui/oruga-next/dist/oruga-full.css'
+import '@oruga-ui/oruga-next/dist/oruga-full-vars.css'
 
 import '@mdi/font/css/materialdesignicons.css'
 
