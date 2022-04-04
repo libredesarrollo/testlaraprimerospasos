@@ -59,6 +59,24 @@ class PostController extends Controller
       return response()->json($post);
    }
 
+   public function upload(Request $request, Post $post)
+   {
+      $request->validate([
+         'image' => 'required|mimes:jpeg,bmp,png,gif|max:10240',
+      ]);
+
+
+
+//dd($request["image"]->extension());
+      
+      $data["image"] = $filename = time() . "." . $request["image"]->extension();
+      $request->image->move(public_path("image/otro"), $filename);
+
+      $post->update($data);
+      //$request->session()->flash('status',"Registro actualizado.");
+      return response()->json($post);
+   }
+
    /**
     * Remove the specified resource from storage.
     *

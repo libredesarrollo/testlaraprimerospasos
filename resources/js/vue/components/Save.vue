@@ -41,7 +41,18 @@
           <option value="not">No</option>
         </o-select>
       </o-field>
+
+      <div class="flex gap-2">
+        <o-upload v-model="file" v-if="post">
+          <o-button tag="a" variant="primary">
+            <o-icon icon="upload"></o-icon>
+            <span>Click para cargar</span>
+          </o-button>
+        </o-upload>
+        <o-button @click="upload" outlined icon-left="upload">Subir</o-button>
+      </div>
     </div>
+    <br />
     <o-button variant="primary" native-type="submit">Enviar</o-button>
   </form>
 </template>
@@ -74,6 +85,7 @@ export default {
       },
       categories: [],
       post: "",
+      file: null,
     };
   },
   methods: {
@@ -127,6 +139,25 @@ export default {
           if (error.response.data.title) {
             this.errors.title = error.response.data.title[0];
           }
+        });
+    },
+    upload() {
+      //return console.log(this.file);
+
+      const formData = new FormData();
+      formData.append("image", this.file);
+
+      axios
+        .post("/api/post/upload/" + this.post.id, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(function (data) {
+          console.log(data.data);
+        })
+        .catch(function () {
+          console.log("FAILURE!!");
         });
     },
     getCategories() {
