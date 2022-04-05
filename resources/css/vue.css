@@ -5,3 +5,7 @@
 :root {
     --oruga-modal-content-padding: 0
 }
+
+.o-field__message{
+    @apply text-red-700
+}

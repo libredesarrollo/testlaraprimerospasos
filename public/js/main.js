@@ -21745,21 +21745,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _this.fileError = "asasas";
+
               if (!_this.$route.params.slug) {
-                _context.next = 4;
+                _context.next = 5;
                 break;
               }
 
-              _context.next = 3;
+              _context.next = 4;
               return _this.getPost();
 
-            case 3:
+            case 4:
               _this.initModel();
 
-            case 4:
+            case 5:
               _this.getCategories();
 
-            case 5:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -21785,7 +21787,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       categories: [],
       post: "",
-      file: null
+      file: null,
+      fileDaD: [],
+      fileError: ""
     };
   },
   methods: {
@@ -21850,6 +21854,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         console.log("FAILURE!!");
       });
     },
+    dragAndDropFile: function dragAndDropFile(s) {
+      console.log(this.fileDaD);
+      console.log(Date());
+    },
     getCategories: function getCategories() {
       var _this3 = this;
 
@@ -21870,16 +21878,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 _this4.post = _context2.sent;
-                _this4.post = _this4.post.data;
-                console.log(_this4.post);
+                _this4.post = _this4.post.data; // console.log(this.post);
 
-              case 5:
+              case 4:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
+    }
+  },
+  watch: {
+    fileDaD: {
+      handler: function handler(val) {
+        var _this5 = this;
+
+        //return console.log(val[0])
+        var formData = new FormData();
+        formData.append("image", val[val.length - 1]);
+        axios.post("/api/post/upload/" + this.post.id, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }).then(function (data) {
+          console.log(data.data);
+        })["catch"](function (error) {
+          _this5.fileDaD.splice(_this5.fileDaD.length - 1, 1);
+
+          _this5.fileError = error.response.data.message;
+          console.log(error.response.data.message);
+        });
+      },
+      deep: true
     }
   }
 });
@@ -22208,11 +22239,29 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Subir");
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_9 = {
+  "class": "flex flex-col gap-2 bg-gray-50 p-4 rounded shadow"
+};
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+  "class": "text-2xl"
+}, "Drag and Drop", -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Enviar");
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Arrastra tus archivos para cargar", -1
+/* HOISTED */
+);
+
+var _hoisted_12 = {
+  "class": "tags"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Enviar");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_o_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("o-input");
@@ -22228,7 +22277,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_o_upload = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("o-upload");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
-    onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onSubmit: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.submit && $options.submit.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_field, {
@@ -22346,34 +22395,46 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [$data.post ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_o_upload, {
-    key: 0,
-    modelValue: $data.file,
-    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
-      return $data.file = $event;
-    })
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_field, {
+    message: $data.fileError
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_button, {
-        tag: "a",
-        variant: "primary"
+      return [$data.post ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_o_upload, {
+        key: 0,
+        modelValue: $data.file,
+        "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+          return $data.file = $event;
+        }),
+        validationMessage: $data.fileError
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_icon, {
-            icon: "upload"
-          }), _hoisted_7];
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_button, {
+            tag: "a",
+            variant: "primary"
+          }, {
+            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_icon, {
+                icon: "upload"
+              }), _hoisted_7];
+            }),
+            _: 1
+            /* STABLE */
+
+          })];
         }),
         _: 1
         /* STABLE */
 
-      })];
+      }, 8
+      /* PROPS */
+      , ["modelValue", "validationMessage"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["modelValue"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_button, {
+  , ["message"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_button, {
     onClick: $options.upload,
     outlined: "",
     "icon-left": "upload"
@@ -22386,12 +22447,55 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onClick"])])]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_button, {
+  , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_field, {
+    message: $data.fileError
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [$data.post ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_o_upload, {
+        key: 0,
+        modelValue: $data.fileDaD,
+        "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+          return $data.fileDaD = $event;
+        }),
+        multiple: "",
+        "drag-drop": "",
+        onInput: $options.dragAndDropFile
+      }, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("section", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_icon, {
+            icon: "upload"
+          }), _hoisted_11])];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["modelValue", "onInput"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["message"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.fileDaD, function (file, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+      key: index
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(file.name) + " ", 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_button, {
+      "icon-left": "times",
+      size: "small",
+      "native-type": "button"
+    })]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])]), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_button, {
     variant: "primary",
     "native-type": "submit"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_10];
+      return [_hoisted_14];
     }),
     _: 1
     /* STABLE */

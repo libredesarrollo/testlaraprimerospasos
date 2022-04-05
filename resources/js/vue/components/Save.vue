@@ -43,13 +43,40 @@
       </o-field>
 
       <div class="flex gap-2">
-        <o-upload v-model="file" v-if="post">
-          <o-button tag="a" variant="primary">
-            <o-icon icon="upload"></o-icon>
-            <span>Click para cargar</span>
-          </o-button>
-        </o-upload>
+        <o-field :message="fileError">
+          <o-upload v-model="file" v-if="post" :validationMessage="fileError">
+            <o-button tag="a" variant="primary">
+              <o-icon icon="upload"></o-icon>
+              <span>Click para cargar</span>
+            </o-button>
+          </o-upload>
+        </o-field>
         <o-button @click="upload" outlined icon-left="upload">Subir</o-button>
+      </div>
+
+      <div class="flex flex-col gap-2 bg-gray-50 p-4 rounded shadow">
+        <h3 class="text-2xl">Drag and Drop</h3>
+        <o-field :message="fileError">
+          <o-upload
+            v-model="fileDaD"
+            v-if="post"
+            multiple
+            drag-drop
+            @input="dragAndDropFile"
+          >
+            <section>
+              <o-icon icon="upload"></o-icon>
+              <span>Arrastra tus archivos para cargar</span>
+            </section>
+          </o-upload>
+        </o-field>
+        <div class="tags">
+          <span v-for="(file, index) in fileDaD" :key="index">
+            {{ file.name }}
+            <o-button icon-left="times" size="small" native-type="button">
+            </o-button>
+          </span>
+        </div>
       </div>
     </div>
     <br />
@@ -60,6 +87,7 @@
 <script>
 export default {
   async mounted() {
+    this.fileError = "asasas";
     if (this.$route.params.slug) {
       await this.getPost();
       this.initModel();
@@ -86,6 +114,8 @@ export default {
       categories: [],
       post: "",
       file: null,
+      fileDaD: [],
+      fileError: "",
     };
   },
   methods: {
@@ -160,6 +190,10 @@ export default {
           console.log("FAILURE!!");
         });
     },
+    dragAndDropFile(s) {
+      console.log(this.fileDaD);
+      console.log(Date());
+    },
     getCategories() {
       this.$axios.get("/api/category/all").then((res) => {
         this.categories = res.data;
@@ -170,7 +204,32 @@ export default {
         "/api/post/slug/" + this.$route.params.slug
       );
       this.post = this.post.data;
-      console.log(this.post);
+      // console.log(this.post);
+    },
+  },
+  watch: {
+    fileDaD: {
+      handler(val) {
+        //return console.log(val[0])
+        const formData = new FormData();
+        formData.append("image", val[val.length - 1]);
+
+        axios
+          .post("/api/post/upload/" + this.post.id, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((data) => {
+            console.log(data.data);
+          })
+          .catch((error) => {
+            this.fileDaD.splice(this.fileDaD.length - 1, 1);
+            this.fileError = error.response.data.message;
+            console.log(error.response.data.message);
+          });
+      },
+      deep: true,
     },
   },
 };
